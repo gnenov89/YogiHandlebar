@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello Handlebars</title>
+  <script src="handlebars-v4.0.2.js"></script>
+</head>
+<body>
+ 
+<div id="contentDiv"></div>
+ 
+<script id="the-template" type="text/x-handlebars-template">
+ 
+
+<div class="potter-1">
+  <h3>{{title}}</h3>
+  {{#with techData}}
+    <div class="isbn">{{{isbn}}}</div>
+    <div class="author">{{{author}}}</div>
+  {{/with}}
+</div><br />
+ 
+{{!-- Otherwise you would use the following --}}
+<div class="potter-2">
+{{title}} by {{techData.author}}
+</div>
+ 
+</script>
+ 
+<script type="text/javascript">
+ 
+// Assign the template name
+var templateInfo = document.getElementById("the-template").innerHTML;
+ 
+  // Compile the template
+  var template = Handlebars.compile(templateInfo);
+ 
+  Handlebars.registerHelper('with', function(context, options) {
+    // Here we are passed the context which points to the
+    // techData part of our data
+    return options.fn(context);
+  });
+ 
+ 
+  var templateData = template({
+    title: "Harry Potter and the Philosopher's Stone",
+  techData: {
+    isbn: "0-7475-3269-9",
+    author: "J. K. Rowling"
+  }
+  });
+ 
+  document.getElementById('contentDiv').innerHTML += templateData;
+ 
+ 
+</script>
+ 
+</body>
+</html>
+handlebarstut5.html
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello Handlebars</title>
+  <script src="handlebars-v4.0.2.js"></script>
+</head>
+<body>
+
+<div id="contentDiv"></div>
+
+<script id="the-template" type="text/x-handlebars-template">
+
+
+  {{> myName }}
+
+
+<div class="post">
+  {{> askQuestion tagName="h2" }}
+
+  <h2>Suggestions</h2>
+
+  
+  {{#each comments}}
+    {{> askQuestion tagName="h3" }}
+  {{/each}}
+</div>
+
+</script>
+
+<script type="text/javascript">
+
+// Assign the template name
+var templateInfo = document.getElementById("the-template").innerHTML;
+
+  // Compile the template
+  var template = Handlebars.compile(templateInfo);
+
+  // 11b. A partial is registered with registerPartial
+  Handlebars.registerPartial('myName', '{{name}}');
+
+  // 12. Define the partial name and then substitute the
+  // passed tags and the data
+  Handlebars.registerPartial('askQuestion',
+    '<{{tagName}}>{{author}}</{{tagName}}>'
+    + '<div class="comment">{{comment}}</div>');
+
+  var templateData = template({
+    name: "Derek",
+    author: "John Smith",
+    comment: "Where should we vacation?",
+    comments: [{
+      author: "Sue Smith",
+      comment: "The beach"
+    },
+    {
+      author: "Paul Smith",
+      comment: "Disneyworld"
+    }]
+  });
+
+  document.getElementById('contentDiv').innerHTML += templateData;
+
+
+</script>
+
+</body>
+</html>
+
